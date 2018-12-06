@@ -1,0 +1,61 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "command": "g++ ${workspaceFolder}/src/main.cpp -o ${workspaceFolder}/bin/main -lglfw3 -lX11 -lXrandr -lXinerama -lXi -lXxf86vm -lXcursor -ldl -lGL -lm -lpthread",// -lglfw3 -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi",//-lglfw3 -lGLU -lGL -lglut -lpthread -lm",//"cc `pkg-config --cflags glfw3` -o ${workspaceFolder}/bin/main ${workspaceFolder}/main.cpp `pkg-config --libs glfw3`",
+            "problemMatcher": "$gcc",
+            "args": [
+                // "`pkg-config --cflags glfw3`",
+                // "-o",
+                // "${workspaceFolder}/Build/main",
+                // "${workspaceFolder}/main.cpp",
+                // "`pkg-config --libs glfw3`",
+                // // "-lGL",
+                // // "-lm",
+                // //"-lGLU",
+                // // "-lGLEW"
+                // "-lGL",
+                // "-lGUL",
+                // "-lglut"
+            ]
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "command": "${workspaceFolder}/Build/main",
+            "args": [
+                "run"
+            ]
+        }
+    ]
+    // "version": "2.0.0",
+    // "command": "g++",
+    // "type": "shell",
+    // "problemMatcher":"$gcc",
+    // "tasks": [
+    //     {
+    //         "label": "Build",
+    //         "args": [
+    //             "-g",
+    //             "--std=c++11",
+    //             "${workspaceFolder}/main.cpp",
+    //             "-o",
+    //             "${workspaceFolder}/Build/main"
+    //         ],
+    //         "group": {
+    //             "kind": "build",
+    //             "isDefault": true
+    //         }
+    //     }
+    // ]
+}

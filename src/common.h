@@ -19,7 +19,10 @@
 // #include<SDL2/SDL_opengl.h>
 // #include<SDL/SDL_image.h>
 // #include<SDL/SDL_ttf.h>
+#include<GL/glew.h>
 #include<GLFW/glfw3.h>
+#define WINDOW_TITLE_PREFIX "Chapter 2"
+#define GLEW_STATIC
 
 
 

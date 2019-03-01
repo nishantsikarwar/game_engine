@@ -2,9 +2,9 @@ CC		:= g++
 C_FLAGS := -std=c++17 -Wall -Wextra -g
 
 BIN		:= bin
-SRC		:= src
-INCLUDE	:= include
-LIB		:= lib
+SRC		:= Sandbox/src
+INCLUDE	:= Engine/src
+LIB		:= Lib
 
 LIBRARIES	:=
 

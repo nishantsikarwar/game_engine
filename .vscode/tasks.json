@@ -2,13 +2,15 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build",
+            "label": "Build_Lib",
             "type": "shell",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "command": "g++ -g ${workspaceFolder}/src/main.cpp -o ${workspaceFolder}/bin/main -lglfw3 -lX11 -lXrandr -lXinerama -lXi -lXxf86vm -lXcursor -ldl -lGL -lm -lpthread -lGLEW",// -lglfw3 -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi",//-lglfw3 -lGLU -lGL -lglut -lpthread -lm",//"cc `pkg-config --cflags glfw3` -o ${workspaceFolder}/bin/main ${workspaceFolder}/main.cpp `pkg-config --libs glfw3`",
+            "command":"g++ -c ${workspaceFolder}/Engine/src/Engine.cpp && ar rs ${workspaceFolder}/Lib/libEngine.a Engine.o && rm *.o",
+            // "command": "g++ -g ${workspaceFolder}/src/main.cpp -o ${workspaceFolder}/bin/main -lglfw3 -lX11 -lXrandr -lXinerama -lXi -lXxf86vm -lXcursor -ldl -lGL -lm -lpthread -lGLEW",
+            // -lglfw3 -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi",//-lglfw3 -lGLU -lGL -lglut -lpthread -lm",//"cc `pkg-config --cflags glfw3` -o ${workspaceFolder}/bin/main ${workspaceFolder}/main.cpp `pkg-config --libs glfw3`",
             "problemMatcher": "$gcc",
             "args": [
                 // "`pkg-config --cflags glfw3`",
@@ -26,13 +28,39 @@
             ]
         },
         {
-            "label": "Run",
+            "label": "Build_Project",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "command":"g++ -Wall -Wextra -g ${workspaceFolder}/Sandbox/src/Application.cpp -o ${workspaceFolder}/bin/main -I Engine/src  Lib/* ",
+            // "command": "g++ -g ${workspaceFolder}/src/main.cpp -o ${workspaceFolder}/bin/main -lglfw3 -lX11 -lXrandr -lXinerama -lXi -lXxf86vm -lXcursor -ldl -lGL -lm -lpthread -lGLEW",
+            // -lglfw3 -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi",//-lglfw3 -lGLU -lGL -lglut -lpthread -lm",//"cc `pkg-config --cflags glfw3` -o ${workspaceFolder}/bin/main ${workspaceFolder}/main.cpp `pkg-config --libs glfw3`",
+            "problemMatcher": "$gcc",
+            "args": [
+                // "`pkg-config --cflags glfw3`",
+                // "-o",
+                // "${workspaceFolder}/Build/main",
+                // "${workspaceFolder}/main.cpp",
+                // "`pkg-config --libs glfw3`",
+                // // "-lGL",
+                // // "-lm",
+                // //"-lGLU",
+                // "-lGLEW"
+                // "-lGL",
+                // "-lGUL",
+                // "-lglut"
+            ]
+        },
+        {
+            "label": "Run_App",
             "type": "shell",
             "group": {
                 "kind": "test",
                 "isDefault": true
             },
-            "command": "${workspaceFolder}/Build/main",
+            "command": "${workspaceFolder}/bin/main",
             "args": [
                 "run"
             ]

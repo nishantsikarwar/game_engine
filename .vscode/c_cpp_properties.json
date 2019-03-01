@@ -4,6 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
+                "${workspaceFolder}/Engine/src/**",
                 "/usr/include/**",
                 "/usr/bin/**",
                 "/usr/include/SDL2",

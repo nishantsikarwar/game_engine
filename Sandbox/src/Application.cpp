@@ -109,18 +109,22 @@ int main (void)
     glfwMakeContextCurrent(window);
 
     /* Called glewInit() after a vaild Context*/
-        glewExperimental=GL_TRUE; //needed
+        glewExperimental=GL_TRUE; //Needed for core profile
       if(glewInit()!= GLEW_OK)
         printf("Error!\n");
 
         printf("%s\n",glGetString(GL_VERSION));
 
 /* Positions for Triangle Vertices */
-         float positions[6] = 
+         float positions[] = 
     {
         -0.5f, -0.5f,
          0.5f, -0.5f,
-         0.0f,  0.5f
+         0.5f,  0.5f,
+
+         0.5f,  0.5f,
+        -0.5f,  0.5f,
+        -0.5f, -0.5f
     };
 
 
@@ -128,15 +132,26 @@ int main (void)
     Everything generated needs identifiers in Opengl  */
 
     unsigned int buffer;
-        glGenBuffers(1, &buffer);
+    glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float)*2, 0);
+    glVertexAttribPointer(
+            0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+			2,                  // size
+			GL_FLOAT,           // type
+			GL_FALSE,           // normalized?
+			sizeof(float)*2,    // stride
+			0                   // array buffer offset
+        );
 
+
+	// Create and compile our GLSL program from the shaders
 ShaderSourceProgram source = ParseShader("res/shaders/Basic.shader");
 unsigned int shader = CreateShader(source.VertexSource, source.FragmentSouce);
 glBindAttribLocation(shader,0,"position");
+
+// Use our shader
 glUseProgram(shader);
 
     /* Loop until the user closes the window */
@@ -146,7 +161,7 @@ glUseProgram(shader);
         glClear(GL_COLOR_BUFFER_BIT);
 
         /* Draws the Triangle With the currently binded Buffer...*/
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
@@ -156,6 +171,8 @@ glUseProgram(shader);
     }
 
     glDeleteProgram(shader);
+    
+    // Close OpenGL window and terminate GLFW
     glfwTerminate();
     return 0;
 }

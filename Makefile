@@ -4,7 +4,7 @@ C_FLAGS := -std=c++17 -Wall -Wextra -g
 BIN		:= bin
 SRC		:= Sandbox/src
 INCLUDE	:= Engine/src
-LIB		:= Lib
+LIB		:= Lib -lglfw3 -lX11 -lXrandr -lXinerama -lXi -lXxf86vm -lXcursor -ldl -lGL -lm -lpthread -lGLEW
 
 LIBRARIES	:=
 
@@ -23,4 +23,4 @@ run: all
 	./$(BIN)/$(EXECUTABLE)
 
 $(BIN)/$(EXECUTABLE): $(SRC)/*.cpp
-	$(CC) $(C_FLAGS) -I$(INCLUDE) -L$(LIB) $^ -o $@ $(LIBRARIES)
+	$(CC) $(C_FLAGS) -I$(INCLUDE) $^ -o $@ -L$(LIB) $(LIBRARIES)

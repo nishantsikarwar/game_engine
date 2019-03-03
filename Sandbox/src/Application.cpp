@@ -1,6 +1,20 @@
 #include "Engine.h"
 #include "common.h"
 
+
+static void GLClearError() 
+{
+    while(glGetError() != GL_NO_ERROR);
+}
+
+static void GLCheckError() 
+{
+    while(GLenum error = glGetError())
+    {
+        std::cout << "[OpenGL Error:] (" << error <<")" << endl;
+    }
+}
+
 struct ShaderSourceProgram 
 {
     std::string VertexSource;
@@ -107,6 +121,8 @@ int main (void)
 
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
+    
+    glfwSwapInterval(1);
 
     /* Called glewInit() after a vaild Context*/
         glewExperimental=GL_TRUE; //Needed for core profile
@@ -118,15 +134,16 @@ int main (void)
 /* Positions for Triangle Vertices */
          float positions[] = 
     {
-        -0.5f, -0.5f,
-         0.5f, -0.5f,
-         0.5f,  0.5f,
-
-         0.5f,  0.5f,
-        -0.5f,  0.5f,
-        -0.5f, -0.5f
+        -0.5f, -0.5f,   //0
+         0.5f, -0.5f,   //1
+         0.5f,  0.5f,   //2
+        -0.5f,  0.5f,   //3
     };
-
+    /* Indices Buffer for Drawing Sqaures... */
+unsigned int vertices[] = {
+    0, 1, 2,
+    2, 3, 0 
+};
 
     /* Creating opengl Buffer For Drawing the triangle
     Everything generated needs identifiers in Opengl  */
@@ -145,24 +162,46 @@ int main (void)
 			0                   // array buffer offset
         );
 
+unsigned int ibo;       /* It has to be Unsigned */
+    glGenBuffers(1, &ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
 
 	// Create and compile our GLSL program from the shaders
 ShaderSourceProgram source = ParseShader("res/shaders/Basic.shader");
 unsigned int shader = CreateShader(source.VertexSource, source.FragmentSouce);
 glBindAttribLocation(shader,0,"position");
 
-// Use our shader
+/* Use our shader */
 glUseProgram(shader);
 
+/*  Using Gl Uniform to send data from cpp program to shader
+    or from our CPU to the GPU*/
+    int location = glGetUniformLocation(shader, "u_Color");
+    glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f);
+    float r = 0.0f;
+    float increment = 0.05f;
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
-    {
+    {   
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
         /* Draws the Triangle With the currently binded Buffer...*/
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-
+        glDrawElements(
+        GL_TRIANGLES,       //mode
+        6,                  //no of indices..
+        GL_UNSIGNED_INT,    // type of data in index buffer.
+         nullptr            /*pointer to index buffer Since we already binded our buffer
+                                we passed the null pointer*/
+         );
+         if(r > 1.0f)
+            increment = -0.5f;
+        else 
+            increment = 0.05f;
+        r += increment;
+        glUniform4f(location, r, 0.3f, 0.8f, 1.0f);
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 
